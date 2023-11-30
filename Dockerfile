@@ -17,7 +17,7 @@ COPY src ./src
 RUN mvn clean package
 
 # Use a lightweight base image for the final image
-FROM adoptopenjdk:17-jre-hotspot AS runtime
+FROM penjdk:17-jdk-slim AS runtime
 
 # Set the working directory
 WORKDIR /app
