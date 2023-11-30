@@ -17,7 +17,7 @@ COPY src ./src
 RUN mvn clean package
 
 # Use a lightweight base image for the final image
-FROM penjdk:17-jdk-slim AS runtime
+FROM openjdk:17-jdk-slim AS runtime
 
 # Set the working directory
 WORKDIR /app
