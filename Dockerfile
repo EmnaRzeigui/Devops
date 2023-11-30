@@ -23,7 +23,7 @@ FROM openjdk:17-jdk-slim AS runtime
 WORKDIR /app
 
 # Copy the built artifact from the build image to the runtime image
-COPY --from=build /app/target/your-app.jar ./app.jar
+COPY --from=build /app/target/mongo-demo-0.0.1-SNAPSHOT.jar ./app.jar
 
 # Set the command to run the application
 CMD ["java", "-jar", "app.jar"]
