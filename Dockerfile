@@ -1,29 +1,14 @@
-# Use a base image with Java and Maven installed
-FROM maven:3.8.3-openjdk-17-slim AS build
+# Use a base image with the desired version of OpenJDK
+FROM openjdk:17
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the Maven project files for dependencies
-COPY pom.xml .
+# Copy the JAR file into the container
+COPY target/mongo-demo-0.0.1-SNAPSHOT.jar .
 
-# Fetch dependencies
-RUN mvn dependency:go-offline
+# Expose the port your application runs on
+EXPOSE 8080
 
-# Copy the application source code
-COPY src ./src
-
-# Build the application
-RUN mvn clean package
-
-# Use a lightweight base image for the final image
-FROM openjdk:17-jdk-slim AS runtime
-
-# Set the working directory
-WORKDIR /app
-
-# Copy the built artifact from the build image to the runtime image
-COPY --from=build /app/target/mongo-demo-0.0.1-SNAPSHOT.jar ./app.jar
-
-# Set the command to run the application
-CMD ["java", "-jar", "app.jar"]
+# Define the command to run your application
+CMD ["java", "-jar", "mongo-demo-0.0.1-SNAPSHOT.jar"]
