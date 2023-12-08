@@ -11,7 +11,7 @@ services:
       - "27017:27017"
 
   spring-app:
-    image: your-spring-app-image:latest
+    image: tp-devops:latest
     container_name: my_spring_app
     depends_on:
       - mongodb
