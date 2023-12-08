@@ -1,23 +1,27 @@
-version: '3.8'
+version: '3'
 
 services:
-  springapp:
-    build: 
-      context: ./Dockerfile
-      dockerfile: Dockerfile
-    ports:
-      - "8080:8080"
-    depends_on:
-      - mongodb
-    environment:
-      SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/mydb  # MongoDB connection URI
-
   mongodb:
-    image: mongo:latest
+    image: mongo
+    container_name: my_mongodb
+    restart: always
+    volumes:
+      - mongodb_data:/data/db
     ports:
       - "27017:27017"
-    volumes:
-      - mongodb_data:/data/db  # Mount a volume for MongoDB data persistence
+
+  spring-app:
+    image: your-spring-app-image:latest
+    container_name: my_spring_app
+    depends_on:
+      - mongodb
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATA_MONGODB_HOST: mongodb
+      SPRING_DATA_MONGODB_PORT: 27017
+      SPRING_DATA_MONGODB_DATABASE: your_database_name
 
 volumes:
-  mongodb_data:  # Define the volume for MongoDB data persistence
+  mongodb_data:
+    driver: local
