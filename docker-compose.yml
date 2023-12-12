@@ -1,27 +1,25 @@
 version: '3'
 
 services:
-  mongodb:
+  spring-boot-app:
+    image: emnarz/tp-devops
+    ports:
+      - "9090:9090"
+    depends_on:
+      - mongo
+    environment:
+      SPRING_DATA_MONGODB_URI: "mongodb://mongo:27017/gte3"
+    networks:
+      - backend
+
+  mongo:
     image: mongo
-    container_name: my_mongodb
-    restart: always
-    volumes:
-      - mongodb_data:/data/db
     ports:
       - "27017:27017"
+    networks:
+      - backend
+    volumes:
+      - mongodb-data:/data/db
 
-  spring-app:
-    image: tp-devops:latest
-    container_name: my_spring_app
-    depends_on:
-      - mongodb
-    ports:
-      - "8080:8080"
-    environment:
-      SPRING_DATA_MONGODB_HOST: mongodb
-      SPRING_DATA_MONGODB_PORT: 27017
-      SPRING_DATA_MONGODB_DATABASE: your_database_name
+  
 
-volumes:
-  mongodb_data:
-    driver: local
